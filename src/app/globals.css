@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0f;
+  --foreground: #e0e0ff;
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --neon-yellow: #ffff00;
+  --neon-pink: #ff0080;
 }
 
 @theme inline {
@@ -12,15 +16,215 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse at top, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+    linear-gradient(180deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%);
+}
+
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  91% { transform: translate(-2px, 1px); }
+  92% { transform: translate(2px, -1px); }
+  93% { transform: translate(-1px, 2px); }
+  94% { transform: translate(1px, -2px); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+  52% { opacity: 1; }
+  54% { opacity: 0.9; }
+}
+
+@keyframes scan {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+  }
+  50% { 
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes border-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.neon-text {
+  text-shadow: 
+    0 0 5px var(--neon-cyan),
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan);
+  animation: flicker 4s infinite;
+}
+
+.neon-text-magenta {
+  text-shadow: 
+    0 0 5px var(--neon-magenta),
+    0 0 10px var(--neon-magenta),
+    0 0 20px var(--neon-magenta);
+}
+
+.neon-text-yellow {
+  text-shadow: 
+    0 0 5px var(--neon-yellow),
+    0 0 10px var(--neon-yellow),
+    0 0 20px var(--neon-yellow);
+}
+
+.glitch {
+  animation: glitch 3s infinite;
+}
+
+.boarding-pass {
+  background: linear-gradient(135deg, rgba(20, 20, 40, 0.9) 0%, rgba(40, 20, 60, 0.9) 100%);
+  border: 1px solid;
+  border-image: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-cyan)) 1;
+  position: relative;
+  overflow: hidden;
+  animation: slide-in 0.5s ease-out forwards;
+}
+
+.boarding-pass::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  animation: scan 3s linear infinite;
+  pointer-events: none;
+}
+
+.boarding-pass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+}
+
+.input-cyber {
+  background: rgba(10, 10, 30, 0.8);
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  animation: pulse-glow 2s infinite;
+  transition: all 0.3s ease;
+}
+
+.input-cyber:focus {
+  outline: none;
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 15px var(--neon-magenta), 0 0 30px var(--neon-magenta);
+}
+
+.input-cyber::placeholder {
+  color: rgba(0, 255, 255, 0.5);
+}
+
+.btn-cyber {
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+  background-size: 200% 200%;
+  animation: border-flow 3s ease infinite;
+  border: none;
+  color: #0a0a0f;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cyber:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-magenta);
+}
+
+.btn-cyber:active {
+  transform: scale(0.98);
+}
+
+.barcode {
+  display: flex;
+  gap: 2px;
+  height: 50px;
+  align-items: end;
+}
+
+.barcode-line {
+  width: 3px;
+  background: var(--neon-cyan);
+  opacity: 0.8;
+}
+
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.dotted-line {
+  border-top: 2px dashed rgba(0, 255, 255, 0.3);
+}
+
+.flight-path-container {
+  position: relative;
+}
+
+.flight-progress-container {
+  position: relative;
+  padding: 20px 0;
+}
+
+.flight-progress-track {
+  position: relative;
+  overflow: visible;
+}
+
+.flight-progress-fill {
+  transition: width 0.5s ease-out;
+  box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-magenta);
+}
+
+.plane-icon {
+  animation: pulse-glow 1.5s infinite;
+  filter: drop-shadow(0 0 8px var(--neon-cyan));
 }
